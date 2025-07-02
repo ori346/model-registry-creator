@@ -1,0 +1,21 @@
+
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: model-registry-creator
+  namespace: ofridman-edb-recommender # Need to change to acutal nampespace
+spec:
+  serviceAccountName: ofridman-sa # Need a proper name for the service account
+  ttlSecondsAfterFinished: 60  # Job and pods will be deleted 60 seconds after completion
+  template:
+    metadata:
+      labels:
+        app: model-registry-creator
+    spec:
+      serviceAccountName: ofridman-sa # Need a proper name for the service account
+      restartPolicy: Never
+      backoffLimit: 0
+      containers:
+      - name: model-registry-creator
+        image: quay.io/rh-ee-ofridman/model-registry-creator:latest
+      namespace: ofridman-edb-recommender # Need to change to acutal nampespace
